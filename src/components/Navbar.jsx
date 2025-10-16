@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,8 +20,7 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   const handleLoginClick = () => {
-    alert("Login functionality would open here!");
-    // In a real app, this would open a login modal or redirect to login page
+    window.location.href = '/login';
   };
 
   return (
@@ -27,8 +28,11 @@ const Navbar = () => {
       <style>
         {`
           .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(20, 23, 32, 0.25);
+            -webkit-backdrop-filter: saturate(180%) blur(16px);
+            backdrop-filter: saturate(180%) blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             padding: 0.5rem 0;
             position: fixed;
             width: 100%;
@@ -56,7 +60,7 @@ const Navbar = () => {
           
           .nav-logo {
             text-decoration: none;
-            color: #2c3e50;
+            color: #fff;
             font-size: 1.3rem;
             font-weight: 700;
             display: flex;
@@ -70,13 +74,13 @@ const Navbar = () => {
           
           .nav-menu {
             display: flex;
-            gap: 1.5rem;
+            gap: 1.2rem;
             align-items: center;
           }
           
           .nav-link {
             text-decoration: none;
-            color: #333;
+            color: #fff;
             font-weight: 500;
             transition: all 0.3s ease;
             position: relative;
@@ -85,11 +89,11 @@ const Navbar = () => {
           }
           
           .nav-link:hover {
-            color: #667eea;
+            color: var(--accent);
           }
           
           .nav-link.active {
-            color: #667eea;
+            color: var(--accent);
             font-weight: 600;
           }
           
@@ -97,35 +101,31 @@ const Navbar = () => {
             content: '';
             position: absolute;
             width: 100%;
-            height: 3px;
+            height: 2px;
             bottom: 0;
             left: 0;
-            background-color: #667eea;
+            background-color: var(--accent);
             border-radius: 2px;
           }
           
-          .login-button {
-            padding: 0.6rem 1.5rem;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
+          .btn {
+            padding: 0.6rem 1.0rem;
+            background: linear-gradient(45deg, var(--accent), var(--accent-2));
+            color: #0b0b0c;
             border: none;
             border-radius: 25px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.9rem;
-            margin-left: 1rem;
-            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+            margin-left: 0.5rem;
+            box-shadow: 0 2px 10px rgba(197, 165, 114, 0.3);
           }
           
-          .login-button:hover {
+          .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            background: linear-gradient(45deg, #5a6fd8, #6a4190);
-          }
-          
-          .login-button:active {
-            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(197, 165, 114, 0.45);
+            filter: brightness(1.05);
           }
           
           .nav-toggle {
@@ -140,23 +140,15 @@ const Navbar = () => {
           .bar {
             width: 25px;
             height: 2px;
-            background-color: #333;
+            background-color: #fff;
             margin: 3px 0;
             transition: 0.3s;
             border-radius: 2px;
           }
           
-          .nav-toggle.active .bar:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
-          }
-          
-          .nav-toggle.active .bar:nth-child(2) {
-            opacity: 0;
-          }
-          
-          .nav-toggle.active .bar:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
-          }
+          .nav-toggle.active .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+          .nav-toggle.active .bar:nth-child(2) { opacity: 0; }
+          .nav-toggle.active .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
           
           @media (max-width: 768px) {
             .nav-menu {
@@ -164,7 +156,7 @@ const Navbar = () => {
               left: -100%;
               top: 60px;
               flex-direction: column;
-              background-color: #fff;
+              background: rgba(20, 23, 32, 0.85);
               width: 100%;
               text-align: center;
               transition: 0.3s;
@@ -172,81 +164,43 @@ const Navbar = () => {
               padding: 2rem 0;
               gap: 1.5rem;
             }
-          
-            .nav-menu.active {
-              left: 0;
-            }
-          
-            .login-button {
-              margin-left: 0;
-              margin-top: 1rem;
-              width: 200px;
-            }
-          
-            .nav-toggle {
-              display: flex;
-            }
-            
-            .navbar.scrolled {
-              height: 50px;
-            }
-            
-            .nav-container {
-              padding: 0 1rem;
-            }
+            .nav-menu.active { left: 0; }
+            .btn { margin-left: 0; width: 200px; }
+            .nav-toggle { display: flex; }
+            .navbar.scrolled { height: 50px; }
+            .nav-container { padding: 0 1rem; }
           }
         `}
       </style>
 
       <div className="nav-container">
         <Link to="/" className="nav-logo">
-          <h2>💎 Luxury Jewelry</h2>
+          <h2>💎 CrystalCrown</h2>
         </Link>
 
         <div className={`nav-menu ${isMenuOpen ? "active" : ""}`}>
-          <Link
-            to="/"
-            className={`nav-link ${isActive("/") ? "active" : ""}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            to="/jewelry"
-            className={`nav-link ${isActive("/jewelry") ? "active" : ""}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Jewelry
-          </Link>
-          <Link
-            to="/about"
-            className="nav-link"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            About
-          </Link>
-          <Link
-            to="/contact"
-            className="nav-link"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Contact
-          </Link>
+          <Link to="/" className={`nav-link ${isActive("/") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Home</Link>
+          <Link to="/jewelry" className={`nav-link ${isActive("/jewelry") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Jewelry</Link>
+          <Link to="/checkout" className={`nav-link ${isActive("/checkout") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Checkout</Link>
+          <Link to="/payment-method" className={`nav-link ${isActive("/payment-method") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Payment Method</Link>
+          <Link to="/payment-history" className={`nav-link ${isActive("/payment-history") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Payment History</Link>
+          <Link to="/insurance-options" className={`nav-link ${isActive("/insurance-options") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Insurance</Link>
+          <Link to="/shipping-insurance" className={`nav-link ${isActive("/shipping-insurance") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Shipping Insurance</Link>
+          <Link to="/invoice" className={`nav-link ${isActive("/invoice") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Invoice</Link>
+          <Link to="/upload-cert" className={`nav-link ${isActive("/upload-cert") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Upload Cert</Link>
+          <Link to="/view-cert" className={`nav-link ${isActive("/view-cert") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>View Cert</Link>
+          <Link to="/gia-certificate" className={`nav-link ${isActive("/gia-certificate") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>GIA Cert</Link>
+          <Link to="/ags-certificate" className={`nav-link ${isActive("/ags-certificate") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>AGS Cert</Link>
+          <Link to="/appraisal-doc" className={`nav-link ${isActive("/appraisal-doc") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Appraisal</Link>
+          <Link to="/auth-verification" className={`nav-link ${isActive("/auth-verification") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>Authenticity</Link>
+          <Link to="/about" className="nav-link" onClick={() => setIsMenuOpen(false)}>About</Link>
+          <Link to="/contact" className="nav-link" onClick={() => setIsMenuOpen(false)}>Contact</Link>
 
-          <button
-            className="login-button"
-            onClick={handleLoginClick}
-            aria-label="Login to your account"
-          >
-            Login
-          </button>
+          <button className="btn" onClick={toggleTheme} aria-label="Toggle theme">{theme === 'light' ? 'Dark' : 'Light'}</button>
+          <button className="btn" onClick={handleLoginClick} aria-label="Login to your account">Login</button>
         </div>
 
-        <button
-          className={`nav-toggle ${isMenuOpen ? "active" : ""}`}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle navigation menu"
-        >
+        <button className={`nav-toggle ${isMenuOpen ? "active" : ""}`} onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle navigation menu">
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>

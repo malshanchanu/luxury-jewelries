@@ -82,13 +82,13 @@ const Footer = () => {
               carefully curated and authenticated.
             </p>
             <div className="social-links">
-              <a href="#" aria-label="Facebook">
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
                 📘
               </a>
-              <a href="#" aria-label="Instagram">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
                 📸
               </a>
-              <a href="#" aria-label="Twitter">
+              <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">
                 🐦
               </a>
             </div>
